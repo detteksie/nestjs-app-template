@@ -14,6 +14,7 @@ import {
 // import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiBody, ApiExcludeEndpoint, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
+
 import { AppService } from './app.service';
 import { User } from './entities/user.entity';
 import { JwtAuthGuard, RefreshAuthGuard } from './guards/jwt-auth.guard';
@@ -26,6 +27,7 @@ import { AuthService } from './modules/auth/auth.service';
 import { LoginDto, LoginResponse } from './modules/auth/dto/login.dto';
 import { ProfileResponse } from './modules/auth/dto/profile.dto';
 import { RegisterDto } from './modules/auth/dto/register.dto';
+import { ApiSuccessJson } from './utils/response.util';
 
 @Controller()
 export class AppController {
@@ -36,17 +38,18 @@ export class AppController {
   @Get()
   @Redirect('api')
   @ApiExcludeEndpoint()
-  getIndex(): string {
-    return 'api';
+  getIndex() {
+    return;
   }
 
   @Get('hello')
-  @ApiResponse({ type: String })
+  @ApiSuccessJson(String)
   getHello(): string {
     return this.appService.getHello();
   }
 
   @Get('bye')
+  @ApiSuccessJson(String)
   getBye(): string {
     return this.appService.getBye();
   }
@@ -57,7 +60,7 @@ export class AppController {
   // @UseGuards(AuthGuard('jwt-access'))
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @ApiResponse({ type: User })
+  @ApiSuccessJson(User)
   getProfile(@Req() req: Request) {
     return req.user;
   }
@@ -71,7 +74,7 @@ export class AuthenticationController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
-  @ApiResponse({ type: User })
+  @ApiSuccessJson(User)
   async register(@Body() body: RegisterDto) {
     return this.authService.register(body);
   }
@@ -81,7 +84,7 @@ export class AuthenticationController {
   // @UseGuards(AuthGuard('local'))
   @UseGuards(LocalAuthGuard)
   @ApiBody({ type: LoginDto })
-  @ApiResponse({ type: LoginResponse })
+  @ApiSuccessJson(LoginResponse)
   async login(@Req() req: Request) {
     return this.authService.login(req.user);
   }
@@ -90,7 +93,7 @@ export class AuthenticationController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(RefreshAuthGuard)
   @ApiBearerAuth()
-  @ApiResponse({ type: LoginResponse })
+  @ApiSuccessJson(LoginResponse)
   async refreshToken(@Req() req: Request) {
     return this.authService.login(req.user);
   }

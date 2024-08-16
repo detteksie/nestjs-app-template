@@ -1,52 +1,61 @@
 # syntax = docker/dockerfile:1
 
-ARG IMAGE=node:20-alpine
+ARG NODE_VERSION=20
+ARG IMAGE=node:${NODE_VERSION}-alpine
 
-# Common
 FROM ${IMAGE} AS base
+LABEL fly_launch_runtime="NestJS"
+
+WORKDIR /home/node/app
+ENV DATABASE_URL="postgres://postgres:postgres@postgres:5432/nest_app_template"
+ENV MONGODB_URI="mongodb://mongodb:27017/nest_app_template"
+ENV REDIS_URL="redis://redis:6379"
+ENV JWT_ACCESS_SECRET="N0t5oSecret"
+ENV JWT_REFRESH_SECRET="N0t5oFre5h"
+ENV THROTTLE_TTL=60
+ENV THROTTLE_LIMIT=10
+ENV CACHE_TTL=10000
+ENV MULTER_DEST="./upload"
+EXPOSE 4000
+EXPOSE 9229
+
+RUN npm install -g pm2 && pm2 update
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 
-WORKDIR /app
 COPY --link package.json pnpm-lock.yaml ./
 
-# Development
-FROM base AS dev
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
-COPY --link . .
-CMD [""]
-
-# Production Dependencies
-FROM base AS prod-deps
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --prod
+# Install All
+FROM base AS installall
+RUN mkdir -p /tmp/dev
+COPY --from=base --link /home/node/app/package.json /home/node/app/pnpm-lock.yaml /tmp/dev/
+RUN cd /tmp/dev && pnpm install --frozen-lockfile
 
 # Build
 FROM base AS build
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+COPY --from=installall --link /tmp/dev/node_modules node_modules
 COPY --link . .
-RUN pnpm run build
+RUN pnpm build
+
+# Install
+FROM base AS install
+RUN mkdir -p /tmp/prod
+COPY --from=base --link /home/node/app/package.json /home/node/app/pnpm-lock.yaml /tmp/prod/
+RUN cd /tmp/prod && pnpm install --frozen-lockfile --prod
 
 # Production
-FROM base AS prod
-COPY --chown=node:node --from=prod-deps /app/package.json /app/pnpm-lock.yaml /app/
-COPY --chown=node:node --from=prod-deps /app/node_modules /app/node_modules
-COPY --chown=node:node --from=build /app/dataSource.js /app/ormconfig.js /app/ecosystem.config.js /app/
-COPY --chown=node:node --from=build /app/dist /app/dist
-COPY --chown=node:node --from=build /app/migrations /app/migrations
+FROM base AS production
+COPY --chown=node:node --from=install /tmp/prod/node_modules node_modules
+COPY --chown=node:node --from=install /tmp/prod/package.json /tmp/prod/pnpm-lock.yaml ./
+COPY --chown=node:node --from=build /home/node/app/dist dist
+COPY --chown=node:node --from=build /home/node/app/db db
+COPY --chown=node:node --from=build /home/node/app/upload upload
+COPY --chown=node:node --from=build /home/node/app/tsconfig.json /home/node/app/ecosystem.config.js /home/node/app/dataSource.js /home/node/app/ormconfig.js ./
 
 ENV NODE_ENV="production"
-ENV DATABASE_URL="postgres://postgres:postgres@postgres:5432/nest-app-template"
-ENV MONGODB_URI="mongodb://mongodb:27017/nest-app-template"
-ENV REDIS_HOST="redis"
-ENV REDIS_PASSWORD="redish"
-ENV JWT_ACCESS_SECRET="N0t5oSecret"
-ENV JWT_REFRESH_SECRET="N0t5oFre5h"
-ENV THROTTLE_TTL="60"
-ENV THROTTLE_LIMIT="10"
-ENV MULTER_DEST="./upload"
-
-EXPOSE 4000
+RUN mkdir /home/node/.pm2 && chown -R 1000:1000 "/home/node/.pm2"
 USER node
-CMD [ "pnpm", "run", "start:pm2" ]
+RUN pm2 update
+CMD [ "npm", "run", "start:pm2" ]

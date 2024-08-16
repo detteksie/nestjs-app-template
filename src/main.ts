@@ -1,15 +1,23 @@
+import { LogLevel } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import compression from 'compression';
+import helmet from 'helmet';
+
 import { AppModule } from './app.module';
 import { setupApp } from './setup-app';
 
 async function bootstrap() {
+  const logger: LogLevel[] =
+    process.env.NODE_ENV === 'development'
+      ? ['fatal', 'error', 'warn', 'log', 'debug', 'verbose']
+      : ['fatal', 'error'];
   const app = await NestFactory.create(AppModule, {
-    // bodyParser: false,
     rawBody: true,
     cors: true,
-    // logger: ['verbose', 'log', 'debug', 'warn', 'error', 'fatal'],
+    logger,
   });
+
   setupApp(app);
 
   const documentBuilder = new DocumentBuilder();
@@ -21,6 +29,8 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
+  app.use(helmet(), compression());
 
   await app.listen(process.env.PORT || 4000);
 }

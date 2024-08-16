@@ -1,16 +1,13 @@
 import { INestApplication, ValidationPipe, VersioningType } from '@nestjs/common';
-import compression from 'compression';
-import helmet from 'helmet';
+import { HttpAdapterHost } from '@nestjs/core';
+
+import { AllExceptionsFilter } from './filters/all-exception.filter';
+import { GlobalInterceptor } from './interceptors/global.interceptor';
 
 export function setupApp(app: INestApplication) {
-  app.use(helmet({ contentSecurityPolicy: false }), compression());
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      transform: true,
-    }),
-  );
-  app.enableVersioning({
-    type: VersioningType.URI,
-  });
+  const { httpAdapter } = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
+  app.useGlobalInterceptors(new GlobalInterceptor());
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+  app.enableVersioning({ type: VersioningType.URI });
 }

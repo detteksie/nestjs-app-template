@@ -1,4 +1,4 @@
-import { ArgumentMetadata, ConsoleLogger, Injectable, PipeTransform } from '@nestjs/common';
+import { ArgumentMetadata, Injectable, Logger, PipeTransform } from '@nestjs/common';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsOptional } from 'class-validator';
 
@@ -34,7 +34,7 @@ export const checkPaginationDefault = (query: PaginationQuery, value: DefaultQue
 
 @Injectable()
 export class PaginationQueryPipe implements PipeTransform<PaginationQuery, PaginationQuery> {
-  private readonly logger = new ConsoleLogger(PaginationQueryPipe.name);
+  private readonly logger = new Logger(PaginationQueryPipe.name);
 
   constructor(private readonly value: DefaultQuery = defaultQuery) {}
 

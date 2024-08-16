@@ -14,6 +14,7 @@ const config = {
   moduleNameMapper: {
     '^~(|/.*)$': '<rootDir>/src/$1',
     '^@app/typeorm-paginate(|/.*)$': '<rootDir>/libs/typeorm-paginate/src/$1',
+    '^@app/mongoose-paginate(|/.*)$': '<rootDir>/libs/mongoose-paginate/src/$1',
   },
 };
 

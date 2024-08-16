@@ -13,6 +13,15 @@ import mongoose from 'mongoose';
   },
 })
 export class Todo {
+  @ApiProperty()
+  declare createdAt: Date;
+
+  @ApiProperty()
+  declare updatedAt: Date;
+
+  @ApiProperty()
+  declare id: number;
+
   @Prop({
     type: Number,
     required: true,

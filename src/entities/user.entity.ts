@@ -10,14 +10,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { hashPassword } from '~/utils/bcrypt.util';
+
+import { hashPassword } from '|/utils/bcrypt.util';
 
 @Entity()
 export class User {
-  @ApiProperty()
-  @PrimaryGeneratedColumn('increment', { type: 'bigint', unsigned: true })
-  id: number;
-
   @ApiProperty()
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
@@ -27,6 +24,10 @@ export class User {
   updatedAt: Date;
 
   @ApiProperty()
+  @PrimaryGeneratedColumn('increment', { type: 'bigint', unsigned: true })
+  id: number;
+
+  @ApiProperty()
   @Column({ unique: true })
   email: string;
 
@@ -34,7 +35,6 @@ export class User {
   @Column({ unique: true })
   username: string;
 
-  @ApiProperty()
   @Exclude()
   @Column()
   password: string;

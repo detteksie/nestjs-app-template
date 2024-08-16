@@ -16,6 +16,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/typeorm-paginate/tsconfig.lib.json"
       }
+    },
+    "mongoose-paginate": {
+      "type": "library",
+      "root": "libs/mongoose-paginate",
+      "entryFile": "index",
+      "sourceRoot": "libs/mongoose-paginate/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/mongoose-paginate/tsconfig.lib.json"
+      }
     }
   }
 }

@@ -1,18 +1,21 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  Query,
+  Get,
+  Param,
   ParseIntPipe,
+  Patch,
+  Post,
+  Query,
 } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { User } from '~/entities/user.entity';
-import { Serialize } from '~/interceptors/serialize.interceptor';
-import { PaginationQuery, PaginationQueryPipe } from '~/utils/pagination-query.util';
+import { ApiTags } from '@nestjs/swagger';
+
+import { User } from '|/entities/user.entity';
+import { Serialize } from '|/interceptors/serialize.interceptor';
+import { PaginationQuery, PaginationQueryPipe } from '|/utils/pagination-query.util';
+import { ApiPaginatedResponse, ApiSuccessJson } from '|/utils/response.util';
+
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsernameResponse } from './dto/username.dto';
@@ -27,11 +30,13 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @ApiSuccessJson(User)
   create(@Body() body: CreateUserDto) {
     return this.usersService.create(body);
   }
 
   @Get()
+  @ApiPaginatedResponse(User)
   findAll(@Query(new PaginationQueryPipe()) query: PaginationQuery) {
     return this.usersService.findAll({
       limit: query.limit,
@@ -41,23 +46,26 @@ export class UsersController {
   }
 
   @Get(':id')
+  @ApiSuccessJson(User)
   findOne(@Param('id', ParseIntPipe) id: number): Promise<User> {
     return this.usersService.findOne(id);
   }
 
   @Get('u/:username')
   @Serialize(UsernameResponse)
-  @ApiResponse({ type: UsernameResponse })
+  @ApiSuccessJson(UsernameResponse)
   async getUserByUsername(@Param('username') username: string): Promise<User> {
     return this.usersService.getUserByUsername(username);
   }
 
   @Patch(':id')
+  @ApiSuccessJson(Object)
   update(@Param('id', ParseIntPipe) id: number, @Body() body: UpdateUserDto) {
     return this.usersService.update(id, body);
   }
 
   @Delete(':id')
+  @ApiSuccessJson(Object)
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.remove(id);
   }

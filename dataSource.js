@@ -1,5 +1,5 @@
 /**
- * @typedef {'development' | 'test' | 'production'} OrmconfigKeys
+ * @typedef {'development' | 'test' | 'production' | 'seed'} OrmconfigKeys
  */
 
 const { DataSource } = require('typeorm');
@@ -14,22 +14,30 @@ const ormconfigObject = {
     url: process.env.DATABASE_URL,
     synchronize: false,
     logging: true,
+    migrations: ['db/migrations/*.js'],
     entities: ['src/**/*.entity.ts'],
-    migrations: ['migrations/*.js'],
+  },
+  seeds: {
+    type: 'postgres',
+    url: process.env.DATABASE_URL,
+    synchronize: false,
+    logging: true,
+    migrations: ['db/seeds/*.js'],
+    migrationsTableName: 'seeds',
   },
   test: {
     type: 'postgres',
     url: process.env.DATABASE_URL,
     synchronize: false,
     logging: false,
-    migrations: ['migrations/*.js'],
+    migrations: ['db/migrations/*.js'],
   },
   production: {
     type: 'postgres',
     url: process.env.DATABASE_URL,
     synchronize: false,
     logging: false,
-    migrations: ['migrations/*.js'],
+    migrations: ['db/migrations/*.js'],
   },
 };
 

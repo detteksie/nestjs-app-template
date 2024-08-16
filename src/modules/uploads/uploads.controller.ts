@@ -11,8 +11,29 @@ import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestj
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { diskStorage } from 'multer';
-import { UploadImageDto, UploadImagesDto, UploadMultipleFilesDto } from './dto/upload.dto';
+
+import { ApiSuccessJson } from '|/utils/response.util';
+
+import {
+  UploadImageDto,
+  UploadImagesDto,
+  UploadMultipleFilesDiskResponse,
+  UploadMultipleFilesDto,
+  UploadMultipleFilesResponse,
+  UploadResponse,
+} from './dto/upload.dto';
 import { UploadsService } from './uploads.service';
+
+const diskStorageVar = diskStorage({
+  destination: (req, file, cb) => {
+    console.log('destination', file);
+    cb(null, './upload');
+  },
+  filename: (req, file, cb) => {
+    console.log('filename', file);
+    cb(null, `${Date.now()}__${file.originalname}`);
+  },
+});
 
 const imageFileFilter = (
   req: Request,
@@ -26,17 +47,6 @@ const imageFileFilter = (
   }
   callback(null, true);
 };
-
-const diskStorageVar = diskStorage({
-  destination: (req, file, cb) => {
-    console.log('destination', file);
-    cb(null, './upload');
-  },
-  filename: (req, file, cb) => {
-    console.log('filename', file);
-    cb(null, `${Date.now()}__${file.originalname}`);
-  },
-});
 
 const singleImage = (storage?: any) =>
   FileInterceptor('image', {
@@ -86,6 +96,7 @@ export class UploadsController {
   @UseInterceptors(singleImage())
   @ApiConsumes('multipart/form-data')
   @ApiBody({ description: 'Single Image', type: UploadImageDto })
+  @ApiSuccessJson(UploadResponse)
   async uploadSingle(@UploadedFile() image: Express.Multer.File) {
     console.time('uploadSingle');
     const result = await this.uploadsService.uploadSingle(image);
@@ -111,6 +122,7 @@ export class UploadsController {
   @UseInterceptors(multipleImage())
   @ApiConsumes('multipart/form-data')
   @ApiBody({ description: 'Multiple Image', type: UploadImagesDto })
+  @ApiSuccessJson(UploadResponse, true)
   async uploadMultiple(@UploadedFiles() images: Express.Multer.File[]) {
     console.time('uploadMultiple');
     const result = await this.uploadsService.uploadMultiple(images);
@@ -134,6 +146,7 @@ export class UploadsController {
   @UseInterceptors(multipleFiles())
   @ApiConsumes('multipart/form-data')
   @ApiBody({ description: 'Multiple Files', type: UploadMultipleFilesDto })
+  @ApiSuccessJson(UploadMultipleFilesResponse)
   async uploadMultipleFiles(
     @UploadedFiles()
     files: UploadMultipleFilesDto,
@@ -148,6 +161,7 @@ export class UploadsController {
   @UseInterceptors(multipleFiles(diskStorageVar))
   @ApiConsumes('multipart/form-data')
   @ApiBody({ description: 'Multiple Files', type: UploadMultipleFilesDto })
+  @ApiSuccessJson(UploadMultipleFilesDiskResponse)
   async uploadMultipleFilesDisk(
     @UploadedFiles()
     files: UploadMultipleFilesDto,

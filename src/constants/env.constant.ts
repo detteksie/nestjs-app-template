@@ -10,6 +10,7 @@ export const THROTTLE_LIMIT = 'THROTTLE_LIMIT';
 export const REDIS_HOST = 'REDIS_HOST';
 export const REDIS_PORT = 'REDIS_PORT';
 export const REDIS_PASSWORD = 'REDIS_PASSWORD';
+export const REDIS_URL = 'REDIS_URL';
 export const CACHE_TTL = 'CACHE_TTL';
 
 export const MULTER_DEST = 'MULTER_DEST';
