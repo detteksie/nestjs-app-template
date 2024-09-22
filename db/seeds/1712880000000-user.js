@@ -12,6 +12,7 @@ module.exports = class User1712880000000 {
 INSERT INTO "user"
   ("email", "username", "password", "name", "is_admin", "sex_type")
 VALUES
+  ('ssamsara98@mailsac.com', 'ssamsara98', '$2b$12$PMyTLFUXRCs2muyHPuUrz.J3POn.GIOMYh.zPm6rbCJjjh7zczZvO', 'S Abd Malik', true, 'MALE'),
   ('detteksie@mailsac.com', 'detteksie', '$2b$12$PMyTLFUXRCs2muyHPuUrz.J3POn.GIOMYh.zPm6rbCJjjh7zczZvO', 'Detteksie Smantie', true, NULL),
   ('abackshall0@pagesperso-orange.fr', 'abackshall0', '$2a$04$w2FobhMBn3O.G/wwNwPoou/NuQF80cscrFbtfanVM8gVeuJGnceme', 'Audrie Backshall', false, 'Female'),
   ('edohmann1@cdc.gov', 'edohmann1', '$2a$04$XHmRIxyDqOfF5GrzxwT2eutI/nkAnETaCtY18CVkVRPGi.7I.BU22', 'Emelen Dohmann', false, 'Male'),
@@ -1009,7 +1010,6 @@ VALUES
   ('smerrgenrl@reuters.com', 'smerrgenrl', '$2a$04$AJyWAGO/agDRsH/BqlaJX.qy8XsSZzpONh3nJY.ewCgXt.UPks5Te', 'Sibyl Merrgen', false, 'Male'),
   ('vmcgookinrm@home.pl', 'vmcgookinrm', '$2a$04$Rg6Hwib0RcAnH9AUjJ/nLuKg4tXLxY3DYe6NKaeyS.dz1utVgOjz.', 'Vinny McGookin', false, 'Female'),
   ('kdenerleyrn@arizona.edu', 'kdenerleyrn', '$2a$04$B6Z4RdyexcR0GHBPj/GQHOFMVNPLONhjv6.BP6EnL3XA0QgwALJm6', 'Kikelia Denerley', false, 'Female'),
-  ('gcoronasro@icq.com', 'gcoronasro', '$2a$04$FUvaPlDSvv51Bg3XX.s75eJyfFVN5l9KxbbrzEgT16.5lHtos3Nd6', 'Germayne Coronas', false, 'Male'),
   ('rarmitrq@blogs.com', 'rarmitrq', '$2a$04$P7EZoxVhG/mZtdjOrvYshOWKqX3PgDqCayBDXTxEJC4Kh10CJk4E6', 'Rose Armit', false, 'Female'),
   ('sjermynrr@ed.gov', 'sjermynrr', '$2a$04$8KbxsLyUd1zmfzcRpwENXOx.tvxkn4g3pbvY3.n5VUuLlQ3dS/u8.', 'Shelagh Jermyn', false, 'Female');
 `);
