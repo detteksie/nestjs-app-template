@@ -1,7 +1,7 @@
 const config = {
   apps: [
     {
-      name: 'nest-app-template',
+      name: 'nestjs-app-template',
       script: '.',
       max_memory_restart: '1G',
     },

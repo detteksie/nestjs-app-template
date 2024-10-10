@@ -1,5 +1,5 @@
 {
-  "name": "nest-app-template",
+  "name": "nestjs-app-template",
   "version": "1.0.0",
   "description": "Nest Application Template",
   "author": "S Abd Malik",
@@ -96,6 +96,9 @@
     "typescript": "^5.4.5"
   },
   "keywords": [],
+  "repository": "https://github.com/detteksie/nestjs-app-template.git",
+  "bugs": "https://github.com/detteksie/nestjs-app-template/issues",
+  "homepage": "https://github.com/detteksie/nestjs-app-template#readme",
   "lint-staged": {
     "*.{md,html,css,json}": "prettier -w",
     "*.{js,ts}": "eslint --cache --fix"

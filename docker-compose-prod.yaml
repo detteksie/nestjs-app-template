@@ -8,7 +8,7 @@ services:
     restart: on-failure
     environment:
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: nest-app-template
+      POSTGRES_DB: nestjs-app-template
     ports:
       - ${POSTGRES_PORT}:5432
     volumes:
@@ -58,7 +58,7 @@ services:
       - net
 
   server:
-    image: detteksie/nest-app-template
+    image: detteksie/nestjs-app-template
     build:
       context: .
       dockerfile: ./Dockerfile

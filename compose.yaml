@@ -1,4 +1,4 @@
-name: nest-app-template
+name: nestjs-app-template
 
 services:
   postgres:
@@ -52,7 +52,7 @@ services:
       - net
 
   server:
-    image: detteksie/nest-app-template:deploy
+    image: detteksie/nestjs-app-template:deploy
     build:
       context: .
       dockerfile: ./Dockerfile
