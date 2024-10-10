@@ -1,5 +1,5 @@
 {
-  "name": "nest-app-template",
+  "name": "nestjs-app-template",
   "version": "1.0.0",
   "description": "Nest Application Template",
   "author": "S Abd Malik",
@@ -26,7 +26,7 @@
     "migration:run:prod": "cross-env NODE_ENV=production npm run torm -- migration:run",
     "migration:revert": "npm run torm -- migration:revert",
     "migration:revert:prod": "cross-env NODE_ENV=production npm run torm -- migration:revert",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "dependencies": {
     "@nestjs/cache-manager": "^2.2.2",
@@ -96,8 +96,17 @@
     "typescript": "^5.4.5"
   },
   "keywords": [],
+  "repository": "https://github.com/detteksie/nestjs-app-template.git",
+  "bugs": "https://github.com/detteksie/nestjs-app-template/issues",
+  "homepage": "https://github.com/detteksie/nestjs-app-template#readme",
   "lint-staged": {
     "*.{md,html,css,json}": "prettier -w",
     "*.{js,ts}": "eslint --cache --fix"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@nestjs/core",
+      "bcrypt"
+    ]
   }
 }

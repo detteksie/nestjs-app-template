@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for nest-app-template on 2024-08-12T22:11:44+07:00
+# fly.toml app configuration file generated for nestjs-app-template on 2024-08-12T22:11:44+07:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'nest-app-template'
+app = 'nestjs-app-template'
 primary_region = 'syd'
 
 [build]

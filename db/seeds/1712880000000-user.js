@@ -12,8 +12,8 @@ module.exports = class User1712880000000 {
 INSERT INTO "user"
   ("email", "username", "password", "name", "is_admin", "sex_type")
 VALUES
-  ('ssamsara98@mailsac.com', 'ssamsara98', '$2b$12$PMyTLFUXRCs2muyHPuUrz.J3POn.GIOMYh.zPm6rbCJjjh7zczZvO', 'S Abd Malik', true, 'MALE'),
   ('detteksie@mailsac.com', 'detteksie', '$2b$12$PMyTLFUXRCs2muyHPuUrz.J3POn.GIOMYh.zPm6rbCJjjh7zczZvO', 'Detteksie Smantie', true, NULL),
+  ('ssamsara98@mailsac.com', 'ssamsara98', '$2b$12$PMyTLFUXRCs2muyHPuUrz.J3POn.GIOMYh.zPm6rbCJjjh7zczZvO', 'S Abd Malik', true, 'Male'),
   ('abackshall0@pagesperso-orange.fr', 'abackshall0', '$2a$04$w2FobhMBn3O.G/wwNwPoou/NuQF80cscrFbtfanVM8gVeuJGnceme', 'Audrie Backshall', false, 'Female'),
   ('edohmann1@cdc.gov', 'edohmann1', '$2a$04$XHmRIxyDqOfF5GrzxwT2eutI/nkAnETaCtY18CVkVRPGi.7I.BU22', 'Emelen Dohmann', false, 'Male'),
   ('jhugill2@lulu.com', 'jhugill2', '$2a$04$8S/xwLihZReNF74FQukEK.XrbpHAvoyFeRWsVALIDnkDxM5ctlACO', 'Jethro Hugill', false, 'Male'),

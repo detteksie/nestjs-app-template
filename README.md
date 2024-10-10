@@ -67,19 +67,19 @@ $ docker-compose down
 
 # run migration on docker-compose
 $ docker container exec -it <workdir_name_server> sh
-# docker container exec -it nest-app-template-server-1 sh
+# docker container exec -it nestjs-app-template-server-1 sh
 $ npm run migration:run # for migrating
 # npm run migration:revert # for reverting
 
 
 # build image
 $ docker build . --target prod -t <image_name>:<image_version>
-# docker build . --target prod -t detteksie/nest-app-template:1
+# docker build . --target prod -t detteksie/nestjs-app-template:1
 
 # run container
 $ docker-compose up postgres # run postgres database from docker-compose.yaml
 $ docker container run --network <workdir_network> -p 4000:4000 --name <your_container_name> -it <image_name>
-# docker container run --network nest-app-template_net -p 4000:4000 --name nestapp -it detteksie/nest-app-template:1
+# docker container run --network nestjs-app-template_net -p 4000:4000 --name nestapp -it detteksie/nestjs-app-template:1
 ```
 
 ## Support
