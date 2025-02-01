@@ -4,7 +4,6 @@ import { MongooseModuleOptions, MongooseOptionsFactory } from '@nestjs/mongoose'
 import mongoose from 'mongoose';
 
 import { MONGODB_URI } from '|/constants/env.constant';
-// import { jsonStringify } from '|/utils/json-stringify.util';
 
 @Injectable()
 export class MongooseConfig implements MongooseOptionsFactory {

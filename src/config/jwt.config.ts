@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import { JwtModuleOptions, JwtOptionsFactory } from '@nestjs/jwt';
 
 import { JWT_ACCESS_SECRET } from '|/constants/env.constant';
-// import { jsonStringify } from '|/utils/json-stringify.util';
 
 @Injectable()
 export class JwtConfig implements JwtOptionsFactory {

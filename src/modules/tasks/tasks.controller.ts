@@ -14,8 +14,8 @@ import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { ObjectId } from 'mongodb';
 
-import { JwtAuthGuard } from '|/guards/jwt-auth.guard';
-import { ParseObjectIdPipe } from '|/pipes/parse-object-id.pipe';
+import { JwtAuthGuard } from '|/res/guards/jwt-auth.guard';
+import { ParseObjectIdPipe } from '|/res/pipes/parse-object-id.pipe';
 import { Todo } from '|/schemas/todo.schema';
 import { PaginationQuery, PaginationQueryPipe } from '|/utils/pagination-query.util';
 import { ApiPaginatedResponse, ApiSuccessJson } from '|/utils/response.util';

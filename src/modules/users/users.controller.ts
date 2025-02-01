@@ -12,7 +12,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 
 import { User } from '|/entities/user.entity';
-import { Serialize } from '|/interceptors/serialize.interceptor';
+import { Serialize } from '|/res/interceptors/serialize.interceptor';
 import { PaginationQuery, PaginationQueryPipe } from '|/utils/pagination-query.util';
 import { ApiPaginatedResponse, ApiSuccessJson } from '|/utils/response.util';
 

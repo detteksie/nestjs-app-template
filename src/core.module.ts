@@ -11,9 +11,9 @@ import { ThrottlerConfig } from './config/throttler.config';
 import { TypeOrmConfig, dataSourceFactory } from './config/typeorm.config';
 import { User } from './entities/user.entity';
 import { AuthModule } from './modules/auth/auth.module';
+import { AccessTokenStrategy, RefreshTokenStrategy } from './res/strategies/jwt.strategy';
+import { LocalStrategy } from './res/strategies/local.strategy';
 import { Todo, TodoSchema } from './schemas/todo.schema';
-import { AccessTokenStrategy, RefreshTokenStrategy } from './strategies/jwt.strategy';
-import { LocalStrategy } from './strategies/local.strategy';
 
 @Global()
 @Module({

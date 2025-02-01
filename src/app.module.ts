@@ -3,13 +3,11 @@ import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/c
 import { AppController, AuthenticationController } from './app.controller';
 import { AppService } from './app.service';
 import { CoreModule } from './core.module';
-import { LoggerMiddleware } from './middlewares/logger.middleware';
-import { TasksModule } from './modules/tasks/tasks.module';
-import { UploadsModule } from './modules/uploads/uploads.module';
-import { UsersModule } from './modules/users/users.module';
+import { ModulesModule } from './modules/modules.module';
+import { LoggerMiddleware } from './res/middlewares/logger.middleware';
 
 @Module({
-  imports: [CoreModule, UsersModule, TasksModule, UploadsModule],
+  imports: [CoreModule, ModulesModule],
   controllers: [AppController, AuthenticationController],
   providers: [AppService],
 })

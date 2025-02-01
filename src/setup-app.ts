@@ -1,8 +1,8 @@
 import { INestApplication, ValidationPipe, VersioningType } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 
-import { AllExceptionsFilter } from './filters/all-exception.filter';
-import { GlobalInterceptor } from './interceptors/global.interceptor';
+import { AllExceptionsFilter } from './res/filters/all-exception.filter';
+import { GlobalInterceptor } from './res/interceptors/global.interceptor';
 
 export function setupApp(app: INestApplication) {
   const { httpAdapter } = app.get(HttpAdapterHost);

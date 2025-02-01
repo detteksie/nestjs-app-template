@@ -17,16 +17,16 @@ import { Request } from 'express';
 
 import { AppService } from './app.service';
 import { User } from './entities/user.entity';
-import { JwtAuthGuard, RefreshAuthGuard } from './guards/jwt-auth.guard';
-import { LocalAuthGuard } from './guards/local-auth.guard';
-import {
-  Serialize,
-  // SerializeInterceptor,
-} from './interceptors/serialize.interceptor';
 import { AuthService } from './modules/auth/auth.service';
 import { LoginDto, LoginResponse } from './modules/auth/dto/login.dto';
 import { ProfileResponse } from './modules/auth/dto/profile.dto';
 import { RegisterDto } from './modules/auth/dto/register.dto';
+import { JwtAuthGuard, RefreshAuthGuard } from './res/guards/jwt-auth.guard';
+import { LocalAuthGuard } from './res/guards/local-auth.guard';
+import {
+  Serialize,
+  // SerializeInterceptor,
+} from './res/interceptors/serialize.interceptor';
 import { ApiSuccessJson } from './utils/response.util';
 
 @Controller()

@@ -17,7 +17,6 @@ import {
 
 import { JWT_ACCESS_SECRET, JWT_REFRESH_SECRET } from '|/constants/env.constant';
 import { User } from '|/entities/user.entity';
-// import { jsonStringify } from '|/utils/json-stringify.util';
 
 interface Payload {
   sub: number;
