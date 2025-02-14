@@ -11,7 +11,7 @@ const eslintrc = {
     jest: true,
   },
   ignorePatterns: ['.eslintrc.js'],
-  plugins: ['@typescript-eslint', 'prettier', 'import'],
+  plugins: ['@typescript-eslint', 'prettier', 'import', 'unused-imports'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
@@ -56,6 +56,7 @@ const eslintrc = {
         },
       },
     ],
+    'unused-imports/no-unused-imports': 'warn',
 
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',

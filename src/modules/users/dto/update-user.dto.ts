@@ -1,12 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
 
-enum SexType {
-  Unknown = 'Unknown',
-  Male = 'Male',
-  Female = 'Female',
-  Other = 'Other',
-}
+import { SexTypeEnum } from '|/elements/enums/sextype.enum';
 
 export class UpdateUserDto {
   @ApiProperty({ default: 'Detteksie Smantie' })
@@ -14,10 +9,10 @@ export class UpdateUserDto {
   @IsOptional()
   name: string;
 
-  @ApiProperty({ enum: SexType })
-  @IsEnum(SexType)
+  @ApiProperty({ enum: SexTypeEnum })
+  @IsEnum(SexTypeEnum)
   @IsOptional()
-  sexType: SexType;
+  sexType: SexTypeEnum;
 
   @ApiProperty({ default: '2002-02-02' })
   @IsString()

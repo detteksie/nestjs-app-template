@@ -12,5 +12,5 @@ declare global {
 
   var jsonStringify: JsonStringify;
 
-  var logger: LoggerService;
+  var lgr: LoggerService;
 }

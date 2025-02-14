@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { BEARER } from '|/constants/config.constant';
-import { JWT_REFRESH_SECRET } from '|/constants/env.constant';
+import { JWT_REFRESH_DURATION, JWT_REFRESH_SECRET } from '|/constants/env.constant';
 import { User } from '|/entities/user.entity';
 import { comparePassword } from '|/utils/bcrypt.util';
 
@@ -76,7 +76,11 @@ export class AuthService {
     const accessToken = this.jwtService.sign(payload);
     const refreshToken = this.jwtService.sign(payload, {
       secret: this.configService.get<string>(JWT_REFRESH_SECRET),
-      expiresIn: process.env.NODE_ENV === 'production' ? '30d' : '1d',
+      expiresIn:
+        this.configService.get<string>(JWT_REFRESH_DURATION) ||
+        process.env.NODE_ENV === 'production'
+          ? '30d'
+          : '1d',
     });
 
     // const cacheKey = `user#${user.id}`;

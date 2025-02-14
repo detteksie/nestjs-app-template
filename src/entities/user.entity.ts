@@ -1,27 +1,28 @@
 import { InternalServerErrorException } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, instanceToPlain } from 'class-transformer';
+import { isArray } from 'class-validator';
 import { nanoid } from 'nanoid';
 import {
+  AfterLoad,
   BeforeInsert,
   Column,
-  CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 
+import { SexTypeEnum } from '|/elements/enums/sextype.enum';
 import { hashPassword } from '|/utils/bcrypt.util';
+
+import { DateAt } from './date';
+import { Role } from './role.entity';
 
 @Entity()
 export class User {
-  @ApiProperty()
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
-
-  @ApiProperty()
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
+  @Column(() => DateAt, { prefix: '' })
+  date: DateAt;
 
   @ApiProperty()
   @PrimaryGeneratedColumn('increment', { type: 'bigint', unsigned: true })
@@ -44,10 +45,6 @@ export class User {
   signature: string;
 
   @ApiProperty()
-  @Column({ name: 'is_admin', default: false })
-  isAdmin: boolean;
-
-  @ApiProperty()
   @Column()
   name: string;
 
@@ -63,8 +60,8 @@ export class User {
   @Column({
     name: 'sex_type',
     nullable: true,
-    default: 'Unknown',
-    enum: ['Unknown', 'Male', 'Female', 'Other'],
+    // enum: ['Unknown', 'Male', 'Female', 'Other'],
+    enum: SexTypeEnum,
     type: 'enum',
   })
   sexType: string;
@@ -77,6 +74,22 @@ export class User {
   @Column({ nullable: true })
   telephone: string;
 
+  /** relations */
+
+  @ManyToMany(() => Role)
+  @JoinTable({
+    name: 'user_to_role',
+    joinColumn: { name: 'user_id' },
+    inverseJoinColumn: { name: 'role_id' },
+  })
+  declare joinRoles?: Role[];
+
+  /** optional declarations */
+
+  declare roles?: string[];
+
+  /** hooks */
+
   @BeforeInsert()
   async handleBeforeInsert() {
     try {
@@ -86,6 +99,16 @@ export class User {
       throw new InternalServerErrorException(err?.message);
     }
   }
+
+  @AfterLoad()
+  afterLoad() {
+    if (this.roles && isArray<Role>(this.roles)) {
+      const roles = this.roles as Array<Role>;
+      this.roles = roles.map((role) => role.type);
+    }
+  }
+
+  /** overrides */
 
   toJSON() {
     return instanceToPlain(this);

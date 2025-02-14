@@ -20,6 +20,9 @@ export class Todo {
   declare updatedAt: Date;
 
   @ApiProperty()
+  declare deletedAt: Date;
+
+  @ApiProperty()
   declare id: number;
 
   @Prop({

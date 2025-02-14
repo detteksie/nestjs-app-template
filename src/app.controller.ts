@@ -12,21 +12,25 @@ import {
   // UseInterceptors,
 } from '@nestjs/common';
 // import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiBody, ApiExcludeEndpoint, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 
 import { AppService } from './app.service';
+import { Roles } from './elements/decorators/roles.decorator';
+import { RoleEnum } from './elements/enums/role.enum';
+import { JwtAccessAuthGuard } from './elements/guards/jwt-access.guard';
+import { JwtRefreshAuthGuard } from './elements/guards/jwt-refresh.guard';
+import { LocalAuthGuard } from './elements/guards/local-auth.guard';
+import { RolesGuard } from './elements/guards/roles.guard';
+import {
+  Serialize,
+  // SerializeInterceptor,
+} from './elements/interceptors/serialize.interceptor';
 import { User } from './entities/user.entity';
 import { AuthService } from './modules/auth/auth.service';
 import { LoginDto, LoginResponse } from './modules/auth/dto/login.dto';
 import { ProfileResponse } from './modules/auth/dto/profile.dto';
 import { RegisterDto } from './modules/auth/dto/register.dto';
-import { JwtAuthGuard, RefreshAuthGuard } from './res/guards/jwt-auth.guard';
-import { LocalAuthGuard } from './res/guards/local-auth.guard';
-import {
-  Serialize,
-  // SerializeInterceptor,
-} from './res/interceptors/serialize.interceptor';
 import { ApiSuccessJson } from './utils/response.util';
 
 @Controller()
@@ -58,10 +62,20 @@ export class AppController {
   // @UseInterceptors(new SerializeInterceptor(ProfileResponse))
   @Serialize(ProfileResponse)
   // @UseGuards(AuthGuard('jwt-access'))
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAccessAuthGuard)
   @ApiBearerAuth()
   @ApiSuccessJson(User)
   getProfile(@Req() req: Request) {
+    return req.user;
+  }
+
+  @Get('profile-admin')
+  @Serialize(ProfileResponse)
+  @UseGuards(JwtAccessAuthGuard, RolesGuard)
+  @Roles(RoleEnum.ADMIN)
+  @ApiBearerAuth()
+  @ApiSuccessJson(User)
+  getProfileRole(@Req() req: Request) {
     return req.user;
   }
 }
@@ -91,7 +105,7 @@ export class AuthenticationController {
 
   @Post('refresh-token')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(RefreshAuthGuard)
+  @UseGuards(JwtRefreshAuthGuard)
   @ApiBearerAuth()
   @ApiSuccessJson(LoginResponse)
   async refreshToken(@Req() req: Request) {

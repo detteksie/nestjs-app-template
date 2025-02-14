@@ -9,10 +9,12 @@ import { CacheManagerConfig } from './config/cache-manager.config';
 import { MongooseConfig } from './config/mongoose.config';
 import { ThrottlerConfig } from './config/throttler.config';
 import { TypeOrmConfig, dataSourceFactory } from './config/typeorm.config';
+import { JwtAccessTokenStrategy } from './elements/strategies/jwt-access-token.strategy';
+import { JwtRefreshTokenStrategy } from './elements/strategies/jwt-refresh-token.strategy';
+import { LocalStrategy } from './elements/strategies/local.strategy';
+import { Role } from './entities/role.entity';
 import { User } from './entities/user.entity';
 import { AuthModule } from './modules/auth/auth.module';
-import { AccessTokenStrategy, RefreshTokenStrategy } from './res/strategies/jwt.strategy';
-import { LocalStrategy } from './res/strategies/local.strategy';
 import { Todo, TodoSchema } from './schemas/todo.schema';
 
 @Global()
@@ -29,15 +31,15 @@ import { Todo, TodoSchema } from './schemas/todo.schema';
     CacheModule.registerAsync({ useClass: CacheManagerConfig }),
     TypeOrmModule.forRootAsync({ useClass: TypeOrmConfig, dataSourceFactory }),
     MongooseModule.forRootAsync({ useClass: MongooseConfig }),
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Role]),
     MongooseModule.forFeature([{ name: Todo.name, schema: TodoSchema }]),
     AuthModule,
   ],
   providers: [
     /** Others */
     LocalStrategy,
-    AccessTokenStrategy,
-    RefreshTokenStrategy,
+    JwtAccessTokenStrategy,
+    JwtRefreshTokenStrategy,
   ],
   exports: [
     /** Modules */
@@ -47,8 +49,8 @@ import { Todo, TodoSchema } from './schemas/todo.schema';
     AuthModule,
     /** Others */
     LocalStrategy,
-    AccessTokenStrategy,
-    RefreshTokenStrategy,
+    JwtAccessTokenStrategy,
+    JwtRefreshTokenStrategy,
   ],
 })
 export class CoreModule {}

@@ -14,8 +14,8 @@ import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { ObjectId } from 'mongodb';
 
-import { JwtAuthGuard } from '|/res/guards/jwt-auth.guard';
-import { ParseObjectIdPipe } from '|/res/pipes/parse-object-id.pipe';
+import { JwtAccessAuthGuard } from '|/elements/guards/jwt-access.guard';
+import { ParseObjectIdPipe } from '|/elements/pipes/parse-object-id.pipe';
 import { Todo } from '|/schemas/todo.schema';
 import { PaginationQuery, PaginationQueryPipe } from '|/utils/pagination-query.util';
 import { ApiPaginatedResponse, ApiSuccessJson } from '|/utils/response.util';
@@ -30,7 +30,7 @@ import { TasksService } from './tasks.service';
   path: 'tasks',
   version: '1',
 })
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAccessAuthGuard)
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
@@ -60,21 +60,21 @@ export class TasksController {
     });
   }
 
-  @Get(':id')
+  @Get('t/:id')
   @ApiParam({ name: 'id', type: String })
   @ApiSuccessJson(Todo)
   findOne(@Param('id', ParseObjectIdPipe) id: ObjectId) {
     return this.tasksService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch('t/:id')
   @ApiParam({ name: 'id', type: String })
   @ApiSuccessJson(Object)
   update(@Param('id', ParseObjectIdPipe) id: ObjectId, @Body() body: UpdateTodoDto) {
     return this.tasksService.update(id, body);
   }
 
-  @Delete(':id')
+  @Delete('t/:id')
   @ApiParam({ name: 'id', type: String })
   @ApiSuccessJson(Object)
   remove(@Param('id', ParseObjectIdPipe) id: ObjectId) {

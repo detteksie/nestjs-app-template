@@ -11,8 +11,8 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
+import { Serialize } from '|/elements/interceptors/serialize.interceptor';
 import { User } from '|/entities/user.entity';
-import { Serialize } from '|/res/interceptors/serialize.interceptor';
 import { PaginationQuery, PaginationQueryPipe } from '|/utils/pagination-query.util';
 import { ApiPaginatedResponse, ApiSuccessJson } from '|/utils/response.util';
 
@@ -45,26 +45,26 @@ export class UsersController {
     });
   }
 
-  @Get(':id')
+  @Get('u/:id')
   @ApiSuccessJson(User)
   findOne(@Param('id', ParseIntPipe) id: number): Promise<User> {
     return this.usersService.findOne(id);
   }
 
-  @Get('u/:username')
+  @Get('un/:username')
   @Serialize(UsernameResponse)
   @ApiSuccessJson(UsernameResponse)
   async getUserByUsername(@Param('username') username: string): Promise<User> {
     return this.usersService.getUserByUsername(username);
   }
 
-  @Patch(':id')
+  @Patch('u/:id')
   @ApiSuccessJson(Object)
   update(@Param('id', ParseIntPipe) id: number, @Body() body: UpdateUserDto) {
     return this.usersService.update(id, body);
   }
 
-  @Delete(':id')
+  @Delete('u/:id')
   @ApiSuccessJson(Object)
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.remove(id);

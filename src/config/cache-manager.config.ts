@@ -1,7 +1,7 @@
 import { CacheOptions, CacheOptionsFactory } from '@nestjs/cache-manager';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { redisStore } from 'cache-manager-redis-store';
+import { redisStore } from 'cache-manager-redis-yet';
 
 import { CACHE_TTL, REDIS_URL } from '|/constants/env.constant';
 
@@ -17,7 +17,6 @@ export class CacheManagerConfig implements CacheOptionsFactory {
       url: this.configService.get<string>(REDIS_URL),
     });
     const cacheOptions: CacheOptions<Record<string, any>> = {
-      // @ts-ignore
       store: (args) => {
         // this.logger.debug(jsonStringify(args), 'store(args)');
         return store;

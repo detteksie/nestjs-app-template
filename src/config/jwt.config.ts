@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtModuleOptions, JwtOptionsFactory } from '@nestjs/jwt';
 
-import { JWT_ACCESS_SECRET } from '|/constants/env.constant';
+import { JWT_ACCESS_DURATION, JWT_ACCESS_SECRET } from '|/constants/env.constant';
 
 @Injectable()
 export class JwtConfig implements JwtOptionsFactory {
@@ -14,7 +14,13 @@ export class JwtConfig implements JwtOptionsFactory {
     // this.logger.debug(jsonStringify(this.configService), 'configService');
     const jwtModuleOptions: JwtModuleOptions = {
       secret: this.configService.get<string>(JWT_ACCESS_SECRET),
-      signOptions: { expiresIn: process.env.NODE_ENV === 'production' ? '7d' : '1h' },
+      signOptions: {
+        expiresIn:
+          this.configService.get<string>(JWT_ACCESS_DURATION) ||
+          process.env.NODE_ENV === 'production'
+            ? '7d'
+            : '1h',
+      },
     };
     return jwtModuleOptions;
   }
